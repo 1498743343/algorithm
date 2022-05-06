@@ -10,7 +10,7 @@ public class Code01PrintBinary {
     /**
      * 打印一个int值的二进制码
      *
-     * @param num 全国矿工工会
+     * @param num 任意 int 值
      */
     public static void print(int num) {
         for (int i = 31; i >= 0; i--) {
@@ -26,5 +26,6 @@ public class Code01PrintBinary {
         print(-a);
         System.out.println(~a +1 );
         print(~a + 1);
+        print(Integer.MIN_VALUE);
     }
 }
