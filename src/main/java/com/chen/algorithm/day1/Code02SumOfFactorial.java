@@ -1,4 +1,4 @@
-package com.chen.algorithm;
+package com.chen.algorithm.day1;
 
 /**
  * code02求 1~n 的阶乘相加：1! + 2! + 3! + ... + n!
@@ -8,13 +8,13 @@ package com.chen.algorithm;
  */
 public class Code02SumOfFactorial {
     /**
-     * f1：每次都对所有的数进行阶乘操作，然后相加
+     * 每次都对所有的数进行阶乘操作，然后相加
      * 性能低，重复步骤多
      *
      * @param n n
      * @return long
      */
-    public static long f1(int n) {
+    public static long bad(int n) {
         long result = 0;
         for (int i = 1; i <= n; i++) {
             long s = 1;
@@ -27,13 +27,13 @@ public class Code02SumOfFactorial {
     }
 
     /**
-     * f2：每次记录上次阶乘的结果，然后 *n 后加到 result 中
+     * 每次记录上次阶乘的结果，然后 *n 后加到 result 中
      * 性能高，避免了之前的重复阶乘
      *
      * @param n n
      * @return long
      */
-    public static long f2(int n) {
+    public static long good(int n) {
         long result = 0;
         int s = 1;
         for (int i = 1; i <= n; i++) {
@@ -45,7 +45,7 @@ public class Code02SumOfFactorial {
 
     public static void main(String[] args) {
         int n = 4;
-        long result = f2(n);
+        long result = good(n);
         System.out.println("result = " + result);
     }
 }

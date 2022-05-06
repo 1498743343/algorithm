@@ -1,4 +1,4 @@
-package com.chen.algorithm;
+package com.chen.algorithm.day1;
 
 /**
  * code01打印二进制

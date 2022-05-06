@@ -1,4 +1,4 @@
-package com.chen.algorithm;
+package com.chen.algorithm.day1;
 
 import java.util.Arrays;
 
