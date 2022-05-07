@@ -43,6 +43,10 @@ public class Code04BisectionMethodPartMin {
         if (arr == null || arr.length == 0) {
             return minIndex == -1;
         }
+        // 加这个判断可以防止传入一个错误的 minIndex 导致数组下标的异常
+        if (minIndex < -1) {
+            return false;
+        }
         int left = minIndex - 1;
         int right = minIndex + 1;
         boolean leftBigger = left < 0 || arr[left] > arr[minIndex];
@@ -68,20 +72,25 @@ public class Code04BisectionMethodPartMin {
             return length - 1;
         }
         int left = 0;
-        int right = arr.length - 1;
+        int right = length - 1;
+        // 走到这里说明[0,length-1]区间的开头是递减的，结尾是递增的
+        // 是 left < right -1 是为了保证：[left,right] 这个区间内最少有三个值，如果有两个或者一个值，我们是没有办法控制边界的
         while (left < right - 1) {
             int mid = (left + right) / 2;
-            if (arr[mid - 1] > arr[mid] && arr[mid] < arr[mid + 1]) {
+            if (arr[mid - 1] > arr[mid] && arr[mid + 1] > arr[mid]) {
                 return mid;
             } else {
+                // 走到这说明 [mid-1,mid+1]区间上是递减的，因为结尾是递增的，所以在[mid+1,length-1]位置上比存在局部最小值
                 if (arr[mid - 1] > arr[mid]) {
                     left = mid + 1;
+                    // 走到这说明 [mid-1,mid]区间上是递增的，因为开头递减，所以在[0,mid-1]位置上必存在局部最小值
                 } else {
                     right = mid - 1;
                 }
             }
         }
-        return arr[left] < arr[right] ? left : right;
+        // 走到这里说明 不满足 left < right - 1 了，即 left == right 或者 left == right -1，那么 left 和 right 谁小谁一定是局部最小值
+        return arr[left] <= arr[right] ? left : right;
     }
 
     public static void printArray(int[] arr) {
