@@ -19,6 +19,8 @@ public class Test {
         dummy.next = head;
         ListNode pre = dummy;
         ListNode end = dummy;
+        ListNode next;
+        ListNode start = head;
         while (end.next != null) {
             for (int i = 0; i < k && end != null; i++) {
                 end = end.next;
@@ -26,23 +28,18 @@ public class Test {
             if (end == null) {
                 break;
             }
-            ListNode start = pre.next;
-            ListNode next = end.next;
+            next = end.next;
             end.next = null;
             pre.next = reverse(start);
             start.next = next;
             pre = start;
             end = start;
+            start = next;
         }
         return dummy.next;
+
     }
 
-    /**
-     * 反转链表，并返回反转后的头部节点
-     *
-     * @param head 头
-     * @return {@link ListNode}
-     */
     public static ListNode reverse(ListNode head) {
         ListNode pre = null;
         ListNode next;
@@ -54,6 +51,5 @@ public class Test {
         }
         return pre;
     }
-
 
 }
