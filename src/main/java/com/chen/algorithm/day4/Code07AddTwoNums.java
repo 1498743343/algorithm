@@ -10,7 +10,7 @@ package com.chen.algorithm.day4;
  * @date 2022/05/12
  */
 public class Code07AddTwoNums {
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 
