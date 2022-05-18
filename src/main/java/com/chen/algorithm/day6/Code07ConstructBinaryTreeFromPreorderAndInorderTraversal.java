@@ -34,10 +34,7 @@ public class Code07ConstructBinaryTreeFromPreorderAndInorderTraversal {
         for (int i = 0; i < length; i++) {
             indexMap.put(inorder[i], i);
         }
-        Integer headIndex = indexMap.get(head.val);
-        head.left = buildTreeInScope(preorder, 1, headIndex, inorder, 0, headIndex - 1, indexMap);
-        head.right = buildTreeInScope(preorder, headIndex + 1, length - 1, inorder, headIndex + 1, length - 1, indexMap);
-        return head;
+        return buildTreeInScope(preorder, 0, length - 1, inorder, 0, length - 1, indexMap);
     }
 
     /**
@@ -58,9 +55,8 @@ public class Code07ConstructBinaryTreeFromPreorderAndInorderTraversal {
         }
         TreeNode head = new TreeNode(preorder[preLeft]);
         Integer headIndex = indexMap.get(head.val);
-        int size = headIndex - inLeft;
-        head.left = buildTreeInScope(preorder, preLeft + 1, preLeft + 1 + size, inorder, inLeft, headIndex - 1, indexMap);
-        head.right = buildTreeInScope(preorder, preLeft + 2 + size, preRight, inorder, headIndex + 1, inRight, indexMap);
+        head.left = buildTreeInScope(preorder, preLeft + 1, headIndex - inLeft + preLeft, inorder, inLeft, headIndex - 1, indexMap);
+        head.right = buildTreeInScope(preorder, headIndex - inLeft + preLeft + 1, preRight, inorder, headIndex + 1, inRight, indexMap);
         return head;
     }
 }
