@@ -28,12 +28,6 @@ public class Code03Partition2 {
             } else {
                 num = array[(int) (Math.random() * array.length)];
             }
-//            System.out.println("排序前");
-//            for (int k : array) {
-//                System.out.print(k + " ");
-//            }
-//            System.out.println();
-//            System.out.println("排序后");
             int[] result = partition(array, num);
             if (!test(array, num, result)) {
                 System.out.println(num);
@@ -50,10 +44,6 @@ public class Code03Partition2 {
             }
         }
         System.out.println("测试结束");
-//        int[] array = {7, 5, 3, 9};
-//        int[] partition = partition(array, 7);
-//        boolean test = test(array, 7, partition);
-//        System.out.println(test);
     }
 
     /**
