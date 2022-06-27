@@ -7,19 +7,18 @@ import java.util.Map;
 
 /**
  * code02 加强堆
- *
+ * <p>
  * 系统提供的堆无法做到的事情：
  * 1）已经入堆的元素，如果参与排序的指标方法变化，系统提供的堆无法做到时间复杂度O(logN)调整！都是O(N)的调整！
  * 2）系统提供的堆只能弹出堆顶，做不到自由删除任何一个堆中的元素，或者说，无法在时间复杂度O(logN)内完成！一定会高于O(logN)
  * 根本原因：无反向索引表
- *
  *
  * @author chenzihan
  * @date 2022/06/23
  */
 public class Code02HeapGreater<T> {
     private final ArrayList<T> heap;
-    private final Map<T,Integer> indexMap;
+    private final Map<T, Integer> indexMap;
     private int heapSize;
     private final Comparator<? super T> comparator;
 
@@ -134,6 +133,21 @@ public class Code02HeapGreater<T> {
      * @param index 位置
      */
     private void heapify(int index) {
-
+        int comparatorIndex = 2 * index + 1;
+        // 当前节点有左子节点时，进行循环
+        while (comparatorIndex < heapSize) {
+            // 如果有右子节点，并且右子节点比左子节点的排序更靠前，让 comparatorIndex 的值来到右子节点的 index 处
+            if (comparatorIndex + 1 < heapSize && comparator.compare(heap.get(comparatorIndex), heap.get(comparatorIndex + 1)) > 0) {
+                comparatorIndex++;
+            }
+            // 如果 index 节点比子节点的排序都要靠前，结束循环，指定元素已经来到了合适的位置
+            if (comparator.compare(heap.get(index), heap.get(comparatorIndex)) <= 0) {
+                break;
+            }
+            // 如果 index 节点比子节点的排序靠后，那么就和子结点中排序靠前的元素交换，然后变换坐标，继续循环
+            swap(comparatorIndex, index);
+            index = comparatorIndex;
+            comparatorIndex = index * 2 + 1;
+        }
     }
 }
