@@ -3,7 +3,7 @@ package com.chen.algorithm.day1;
 import java.util.Arrays;
 
 /**
- * code03排序 todo
+ * code03排序
  * 3种性能低但是经典的排序算法：
  * <ol>
  *     <li>选择排序</li>
