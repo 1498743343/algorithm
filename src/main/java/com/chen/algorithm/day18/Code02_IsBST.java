@@ -12,16 +12,6 @@ import java.util.List;
  */
 public class Code02_IsBST {
 
-    public static class Node {
-        public int value;
-        public Node left;
-        public Node right;
-
-        public Node(int data) {
-            this.value = data;
-        }
-    }
-
     public static void main(String[] args) {
         int maxLevel = 4;
         int maxValue = 100;
