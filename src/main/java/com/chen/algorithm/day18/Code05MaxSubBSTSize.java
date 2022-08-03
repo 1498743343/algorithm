@@ -49,18 +49,26 @@ public class Code05MaxSubBSTSize {
         boolean rightCase = false;
         int leftSize = 0;
         int rightSize = 0;
-        if (leftInfo != null && leftInfo.isBST && leftInfo.max < head.val) {
-            min = leftInfo.min;
-            leftCase = true;
+        // 有左节点
+        if (leftInfo != null) {
+            // 如果左节点是BST，并且当前节点加入以后满足左半部分是一个BST
+            if (leftInfo.isBST && leftInfo.max < head.val) {
+                leftCase = true;
+            }
+            min = Math.min(min, leftInfo.min);
             leftSize = leftInfo.maxSize;
-        } else if (leftInfo == null) {
+        } else {
             leftCase = true;
         }
-        if (rightInfo != null && rightInfo.isBST && rightInfo.min > head.val) {
-            max = rightInfo.max;
-            rightCase = true;
+        // 有右节点
+        if (rightInfo != null) {
+            // 如果右节点是BST，并且当前节点加入以后满足右半部分是一个BST
+            if (rightInfo.isBST && rightInfo.min > head.val) {
+                rightCase = true;
+            }
+            max = Math.max(max, rightInfo.max);
             rightSize = rightInfo.maxSize;
-        } else if (rightInfo == null) {
+        } else {
             rightCase = true;
         }
         boolean isBST = false;
@@ -146,10 +154,8 @@ public class Code05MaxSubBSTSize {
         return head;
     }
 
-    // 为了验证
-    // 对数器方法
     public static void main(String[] args) {
-        int maxLevel = 4;
+        int maxLevel = 10;
         int maxValue = 100;
         int testTimes = 1000000;
         System.out.println("测试开始");
