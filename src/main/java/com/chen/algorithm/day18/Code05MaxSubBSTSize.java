@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * isBST - 当前节点是否是搜索二叉树
  * <p>
  * 在线测试链接 : <a href="https://leetcode.cn/problems/largest-bst-subtree">...</a>
- * todo 现在手写的方法有错误，待解决
  *
  * @author chenzihan
  * @date 2022/08/02
