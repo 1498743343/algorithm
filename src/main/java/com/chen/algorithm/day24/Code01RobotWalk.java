@@ -100,20 +100,33 @@ public class Code01RobotWalk {
      * 3. 1 < cur < n时，结果依赖于 (cur - 1, k - 1) 和 (cur + 1, k - 1)
      * 综上，我们可以根据 base case 建立所有情况的图
      * 我们以 target == 3, n == 5举例，见下图
+     * <img width="640" height="320" src="https://fastly.jsdelivr.net/gh/1498743343/images@master/images/16614840058602a1523670301b36b1d8c10184c785f0.jpg" alt="">
+     * 由上图可以发现这是一个有边界会撞墙的倒着的杨辉三角
      *
      * @param cur    当前位置
      * @param target 目标位置
      * @param n      范围：1~n
      * @param k      步数
      * @return int
-     * @return int
      */
     private static int ways3(int cur, int target, int n, int k) {
-        int[][] dp = new int[n + 1][n + 1];
+        // 第一个数代表cur，第二个数代表剩余步数
+        int[][] dp = new int[n + 1][k + 1];
+        // cur 在 target 位置，剩余步数为 0 的时候，有且仅有一种走法
         dp[target][0] = 1;
-        for (int i = 1; i <= k; i++) {
-            dp[1][i] =
+        // 因为 k 为 0 的情况下的解法已经在上一步算过了，所以从 k == 1 开始
+        for (int rest = 1; rest <= k; rest++) {
+            // cur == 1 这一行，仅依赖于自己左下角的位置
+            dp[1][rest] = dp[2][rest - 1];
+            // 其他位置依赖于自己左上角和左下角的位置
+            for (int start = 2; start < n; start++) {
+                dp[start][rest] = dp[start - 1][rest - 1] + dp[start + 1][rest - 1];
+            }
+            // cur == n 这一行，仅依赖于自己左上角的位置
+            dp[n][rest] = dp[n - 1][rest - 1];
+
         }
+        return dp[cur][k];
     }
 
 }
