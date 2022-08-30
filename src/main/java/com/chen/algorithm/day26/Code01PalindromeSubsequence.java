@@ -14,7 +14,6 @@ public class Code01PalindromeSubsequence {
 
     public static void main(String[] args) {
         String test = "abab";
-        char[] c1 = test.toCharArray();
         System.out.println(longestPalindromeSubseq1(test));
         System.out.println(longestPalindromeSubseq2(test));
     }
@@ -143,7 +142,7 @@ public class Code01PalindromeSubsequence {
             return chars[left] == chars[right] ? 2 : 1;
         } else {
             // 当 left 和 right 相差 1 以上时，分情况讨论
-            // 1. 不以 left 开头也不以 right 结尾，但是通过函数我们必然直到，情况2和情况3都包括了情况1，也就是说 p2,p3 >= p1，所以 p1 可以去掉
+            // 1. 不以 left 开头也不以 right 结尾，但是通过函数我们必然知道，情况2和情况3都包括了情况1，也就是说 p2,p3 >= p1，所以 p1 可以去掉
             int p1 = process(chars, left + 1, right - 1);
             // 2. 不以 left 开头，以 right 结尾
             int p2 = process(chars, left + 1, right);
@@ -153,6 +152,43 @@ public class Code01PalindromeSubsequence {
             int p4 = (chars[left] == chars[right] ? 2 : 0) + process(chars, left + 1, right - 1);
             return Math.max(Math.max(p1, p2), Math.max(p3, p4));
         }
+    }
+
+    /**
+     * 方法三：
+     * 动态规划正面求解，根据方法二我们可以看到影响最终结果的只有两个值，left 和 right
+     * 对于一个点 (left,right)，和三个点的位置有关系(left+1,right),(left,right-1),(left+1,right-1)
+     * 综上用二维数组可以表示所有情况
+     *
+     * @param s 年代
+     * @return int
+     */
+    public static int longestPalindromeSubseq3(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        char[] chars = s.toCharArray();
+        int length = chars.length;
+        int[][] dp = new int[length][length];
+        // 填充 base case
+        dp[length - 1][length - 1] = 1;
+        for (int i = 0; i < length - 1; i++) {
+            dp[i][i] = 1;
+            dp[i][i + 1] = chars[i] == chars[i + 1] ? 2 : 1;
+        }
+        // 根据已经填好的 base case 补充其他节点的值
+        for (int left = length - 3; left >= 0; left--) {
+            for (int right = left + 2; right < length; right++) {
+                int p1 = dp[left + 1][right];
+                int p2 = dp[left][right - 1];
+                int max = Math.max(p1, p2);
+                if (chars[left] == chars[right]) {
+                    max = Math.max(max, (dp[left + 1][right - 1] + 2));
+                }
+                dp[left][right] = max;
+            }
+        }
+        return dp[0][length - 1];
     }
 
 }
