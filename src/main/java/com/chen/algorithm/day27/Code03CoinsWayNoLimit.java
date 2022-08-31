@@ -14,10 +14,10 @@ package com.chen.algorithm.day27;
 public class Code03CoinsWayNoLimit {
 
     public static int[] randomArray(int maxLen, int maxValue) {
-        int N = (int) (Math.random() * maxLen);
-        int[] arr = new int[N];
+        int n = (int) (Math.random() * maxLen);
+        int[] arr = new int[n];
         boolean[] has = new boolean[maxValue + 1];
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             do {
                 arr[i] = (int) (Math.random() * maxValue) + 1;
             } while (has[arr[i]]);
@@ -27,8 +27,8 @@ public class Code03CoinsWayNoLimit {
     }
 
     public static void printArray(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
+        for (int j : arr) {
+            System.out.print(j + " ");
         }
         System.out.println();
     }
@@ -104,7 +104,14 @@ public class Code03CoinsWayNoLimit {
         dp[length][0] = 1;
         for (int index = length - 1; index >= 0; index--) {
             for (int rest = 0; rest <= aim; rest++) {
-
+                // 通过 dp1 中的依赖关系可以看到，(index,rest)位置的值依赖于(index+1,rest)和rest-arr[index]*i>0时(index+1,rest-arr[index]*i)各个位置上的值
+                // 但是必有一个值满足 rest-arr[index]*(i+1) < 0 <= rest-arr[index]*i，此时的位置满足 dp[index][rest-arr[index]*i] == dp[index+1][rest-arr[index]*i]，因为没有累加值了
+                // 继续往后推导我们可以知道 dp[index][rest] = dp[index][rest-arr[index]] + arr[index]
+                // 总结为下面代码
+                dp[index][rest] = dp[index + 1][rest];
+                if (rest - arr[index] >= 0) {
+                    dp[index][rest] += dp[index][rest - arr[index]];
+                }
             }
         }
         return dp[0][aim];
