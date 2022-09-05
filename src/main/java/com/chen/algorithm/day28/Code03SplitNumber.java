@@ -11,38 +11,19 @@ package com.chen.algorithm.day28;
  */
 public class Code03SplitNumber {
 
-    public static int dp2(int n) {
-        if (n < 0) {
-            return 0;
-        }
-        if (n == 1) {
-            return 1;
-        }
-        int[][] dp = new int[n + 1][n + 1];
-        for (int pre = 1; pre <= n; pre++) {
-            dp[pre][0] = 1;
-            dp[pre][pre] = 1;
-        }
-        for (int pre = n - 1; pre >= 1; pre--) {
-            for (int rest = pre + 1; rest <= n; rest++) {
-                dp[pre][rest] = dp[pre + 1][rest];
-                dp[pre][rest] += dp[pre][rest - pre];
-            }
-        }
-        return dp[1][n];
-    }
-
     public static void main(String[] args) {
         int maxValue = 50;
         int tryTimes = 10000;
         System.out.println("测试开始");
         for (int i = 0; i < tryTimes; i++) {
             int value = (int) (Math.random() * maxValue) + 1;
+//            int value = 3;
             int ans1 = ways(value);
             int ans2 = dp1(value);
             int ans3 = dp2(value);
             if (ans1 != ans2 || ans1 != ans3) {
                 System.out.println("测试出错了");
+                System.out.println("value = " + value);
                 System.out.println("ans1 = " + ans1);
                 System.out.println("ans2 = " + ans2);
                 System.out.println("ans3 = " + ans3);
@@ -103,6 +84,8 @@ public class Code03SplitNumber {
         int[][] dp = new int[aim + 1][aim + 1];
         for (int pre = 1; pre <= aim; pre++) {
             dp[pre][0] = 1;
+        }
+        for (int pre = aim; pre >= 1; pre--) {
             for (int rest = pre; rest <= aim; rest++) {
                 int ways = 0;
                 for (int i = 0; i <= rest - pre; i++) {
@@ -114,4 +97,33 @@ public class Code03SplitNumber {
         return dp[1][aim];
     }
 
+    /**
+     * 动态规划二：由动态规划一方法可知，存在枚举行为，观察位置关系，干掉最里层的 for 循环
+     *
+     * @param aim 目标值
+     * @return int
+     */
+    private static int dp2(int aim) {
+        if (aim == 1) {
+            return 1;
+        }
+        int[][] dp = new int[aim + 1][aim + 1];
+        for (int pre = 1; pre <= aim; pre++) {
+            dp[pre][0] = 1;
+        }
+        // 因为简化后的表达式存在 pre+1，所以一定要让 pre <= aim-1，但这样我们就没有给 dp[aim][aim] 点赋值
+        // 所以在这里提前给这个点赋值
+        dp[aim][aim] = 1;
+        for (int pre = aim - 1; pre >= 1; pre--) {
+            for (int rest = pre; rest <= aim; rest++) {
+                // 由于填充数组的顺序是从下到上，从左到右，所以观察依赖关系时，我们需要看左边的节点和下面的节点
+                // 左侧节点观察后没有发现关联关系，所以只能看下面的点，即 dp[pre+1][rest]
+                // dp[pre][rest] = dp[pre][rest-pre] + dp[pre+1][rest-pre-1] + ... + dp[rest][0]
+                // dp[pre+1][rest] = dp[pre+1][rest-pre-1] + dp[pre+2][rest-pre-2] + .. + dp[rest][0]
+                // 所以可得: dp[pre][rest] = dp[pre][rest-pre] + dp[pre+1][rest]
+                dp[pre][rest] = dp[pre][rest - pre] + dp[pre + 1][rest];
+            }
+        }
+        return dp[1][aim];
+    }
 }
