@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * code15 leetcode 第15题
+ * <a href="https://leetcode.cn/problems/3sum/?favorite=2cktkvj">测试链接</a>
+ * 先把数组排序，然后使用左右双指针来解题
+ *
+ * @author chenzihan
+ * @date 2022/09/13
+ */
 public class Code15 {
     public static void main(String[] args) {
         int[] test = {1, -1, -1, 0};
