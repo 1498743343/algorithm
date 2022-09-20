@@ -26,35 +26,24 @@ public class Code08MergeTwoSortedLinkedList {
     }
 
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        // 如果两个链表中有一个是 null，直接返回另一个链表
-        if (list1 == null || list2 == null) {
-            return list1 == null ? list2 : list1;
-        }
-        // 创建头部链表
-        ListNode head;
-        if (list1.val < list2.val) {
-            head = list1;
-            list1 = list1.next;
-        } else {
-            head = list2;
-            list2 = list2.next;
-        }
-        // 使用 current 节点去遍历整个穿起来的链表
-        ListNode current = head;
-        // 当有一个链表遍历完时，停止循环
+        ListNode dumy = new ListNode();
+        ListNode cur = dumy;
         while (list1 != null && list2 != null) {
-            if (list1.val < list2.val) {
-                current.next = list1;
-                current = list1;
-                list1 = list1.next;
-            } else {
-                current.next = list2;
-                current = list2;
+            if (list1.val > list2.val) {
+                cur.next = list2;
                 list2 = list2.next;
+            }else{
+                cur.next = list1;
+                list1 = list1.next;
             }
+            cur = cur.next;
         }
-        // 哪个链表不为空就让 current 的 next 指针指向谁，链表串联完成
-        current.next = list1 == null ? list2 : list1;
-        return head;
+        if (list1 != null) {
+            cur.next = list1;
+        }
+        if (list2 != null) {
+            cur.next = list2;
+        }
+        return dumy.next;
     }
 }

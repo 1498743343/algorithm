@@ -35,42 +35,26 @@ public class Code07AddTwoNums {
      * @return {@link ListNode}
      */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int list1Length = getLength(l1);
-        int list2Length = getLength(l2);
-        ListNode longList = list1Length >= list2Length ? l1 : l2;
-        ListNode shortList = longList == l1 ? l2 : l1;
-        ListNode currentNodeInLongList = longList;
-        ListNode currentNodeInShortList = shortList;
+        ListNode dumy = new ListNode();
+        ListNode cur = dumy;
         int carry = 0;
-        int currentNum;
-        ListNode last = currentNodeInLongList;
-        while (currentNodeInShortList != null) {
-            currentNum = currentNodeInLongList.val + currentNodeInShortList.val + carry;
-            carry = currentNum / 10;
-            currentNodeInLongList.val = currentNum % 10;
-            last = currentNodeInLongList;
-            currentNodeInLongList = currentNodeInLongList.next;
-            currentNodeInShortList = currentNodeInShortList.next;
-        }
-        while (currentNodeInLongList != null) {
-            currentNum = currentNodeInLongList.val + carry;
-            carry = currentNum / 10;
-            currentNodeInLongList.val = currentNum % 10;
-            last = currentNodeInLongList;
-            currentNodeInLongList = currentNodeInLongList.next;
+        while (l1 != null || l2 != null) {
+            int num1 = l1 == null ? 0 : l1.val;
+            int num2 = l2 == null ? 0 : l2.val;
+            int value = num1 + num2 + carry;
+            carry = value / 10;
+            cur.next = new ListNode(value % 10);
+            cur = cur.next;
+            if (l1 != null) {
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2 = l2.next;
+            }
         }
         if (carry != 0) {
-            last.next = new ListNode(1);
+            cur.next = new ListNode(1);
         }
-        return longList;
-    }
-
-    public static int getLength(ListNode head){
-        int size = 0;
-        while (head != null) {
-            size++;
-            head = head.next;
-        }
-        return size;
+        return dumy.next;
     }
 }
