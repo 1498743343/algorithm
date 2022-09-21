@@ -40,4 +40,66 @@ public class Code42 {
         }
         return ans;
     }
+
+    /**
+     * 双指针
+     *
+     * @param height 高度
+     * @return int
+     */
+    public int trap1(int[] height) {
+        if (height == null || height.length <= 2) {
+            return 0;
+        }
+        int n = height.length;
+        int left = 0;
+        int right = n - 1;
+        // 先给 leftMax 和 rightMax 赋初始值
+        int leftMax = height[0];
+        int rightMax = height[n - 1];
+        int sum = 0;
+        while (left < right) {
+            // 如果 height[left] < height[right]，则必有 leftMax < rightMax，所以 leftMax 决定了 left 位置的存水量
+            if (height[left] < height[right]) {
+                leftMax = Math.max(height[left], leftMax);
+                sum += leftMax - height[left++];
+            } else {
+                // 如果 height[left] >= height[right]，则必有 leftMax >= rightMax，所以 rightMax 决定了 right 位置的存水量
+                rightMax = Math.max(rightMax, height[right]);
+                sum += rightMax - height[right--];
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 单调栈
+     *
+     * @param height 高度
+     * @return int
+     */
+    public int trap2(int[] height) {
+        if (height == null || height.length <= 2) {
+            return 0;
+        }
+        int n = height.length;
+        int[] stack = new int[n];
+        int si = -1;
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            int cur = height[i];
+            // 做一个由下到上递减的单调栈，如果发现栈顶元素小于 cur 时，那么就知道以当前位置为底，即以 height[stack[si]] 为底，可以存水的矩形的面积
+            while (si != -1 && height[stack[si]] < cur) {
+                int num = height[stack[si--]];
+                // 这是一个比较坑的地方，在计算矩形面积的题中，在 while 循环中，如果 si == -1，当前的 num 也可以计算面积，但是这里是不能存水的，所以要 break
+                if (si == -1) {
+                    break;
+                }
+                int left = stack[si];
+                sum += (Math.min(height[left], height[i]) - num) * (i - left - 1);
+            }
+            stack[++si] = i;
+        }
+        return sum;
+    }
 }
