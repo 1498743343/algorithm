@@ -22,8 +22,8 @@ public class FastPointerAndSlowPointer {
         if (head == null || head.next == null || head.next.next == null) {
             return head;
         }
-        Node fastPointer = head.next.next;
-        Node slowPointer = head.next;
+        Node fastPointer = head;
+        Node slowPointer = head;
         while (fastPointer.next != null && fastPointer.next.next != null) {
             fastPointer = fastPointer.next.next;
             slowPointer = slowPointer.next;
