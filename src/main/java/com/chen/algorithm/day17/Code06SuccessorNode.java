@@ -3,6 +3,7 @@ package com.chen.algorithm.day17;
 /**
  * code06后继节点
  * 根据给定的数据结构，求当前节点的后继节点
+ * 后继节点定义：中序遍历，当前节点的下一个节点
  *
  * @author chenzihan
  * @date 2022/08/01
