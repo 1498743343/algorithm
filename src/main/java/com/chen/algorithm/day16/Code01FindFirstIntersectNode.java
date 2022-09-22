@@ -19,88 +19,100 @@ public class Code01FindFirstIntersectNode {
         }
     }
 
+    /**
+     * 得到相交节点
+     *
+     * @param head1 head1
+     * @param head2 head2
+     * @return {@link Node}
+     */
     public static Node getIntersectNode(Node head1, Node head2) {
         if (head1 == null || head2 == null) {
             return null;
         }
-        // 1. 判断两个链表是否是包括环形
-        Node loop1 = getLoopFirstNode(head1);
-        Node loop2 = getLoopFirstNode(head2);
-        // 2. 如果两个链表都包括环形
+        Node loop1 = getFirstLoopNode(head1);
+        Node loop2 = getFirstLoopNode(head2);
+        // 如果一个有环，一个没环，一定不相交
+        // 都有环
         if (loop1 != null && loop2 != null) {
-            return bothLoop(head1, loop1, head2, loop2);
+            return bothLoop(head1, head2, loop1, loop2);
         }
-        // 3. 如果两个链表都不包括环形
+        // 都无环
         if (loop1 == null && loop2 == null) {
             return noLoop(head1, head2);
         }
-        // 4. 如果一个包括环形，一个不包括环形，那么一定不相交
-        // 5. 返回结果
+        return null;
+    }
+
+    /**
+     * 都有环，可能两个链表相交于环上，也可能相交与入环前的节点上
+     *
+     * @param head1 head1
+     * @param head2 head2
+     * @param loop1 loop1
+     * @param loop2 loop2
+     * @return {@link Node}
+     */
+    private static Node bothLoop(Node head1, Node head2, Node loop1, Node loop2) {
+        // 如果相等，那么相交与入环前或者入环的点相同
+        if (loop1 == loop2) {
+            Node c1 = head1;
+            int n = 0;
+            while (c1 != loop1) {
+                n++;
+                c1 = c1.next;
+            }
+            Node c2 = head2;
+            while (c2 != loop2) {
+                n--;
+                c2 = c2.next;
+            }
+            c1 = n > 0 ? head1 : head2;
+            c2 = c1 == head1 ? head2 : head1;
+            n = Math.abs(n);
+            while (n > 0) {
+                c1 = c1.next;
+                n--;
+            }
+            while (c1 != c2) {
+                c1 = c1.next;
+                c2 = c2.next;
+            }
+            return c1;
+        }
+        // 如果不相等，一个环自旋一周，如果找到了另一个入环点，那么相交，否则是两个不同的环
+        Node cur = loop1.next;
+        while (cur != loop1) {
+            if (cur == loop2) {
+                return loop2;
+            }
+            cur = cur.next;
+        }
         return null;
     }
 
     private static Node noLoop(Node head1, Node head2) {
+        if (head1 == null || head2 == null) {
+            return null;
+        }
         Node cur1 = head1;
-        Node cur2 = head2;
         int n = 0;
         while (cur1.next != null) {
             n++;
             cur1 = cur1.next;
         }
+        Node cur2 = head2;
         while (cur2.next != null) {
             n--;
             cur2 = cur2.next;
         }
-        // 如果俩个链表的尾节点不相等，那么一定不相交
-        if (cur1 != cur2) {
-            return null;
-        }
-        // 走到这里说明两个链表的尾节点相等，寻找相交的第一个节点
-        cur1 = n < 0 ? head2 : head1;
-        cur2 = cur1 == head1 ? head2 : head1;
-        n = Math.abs(n);
-        while (n >= 0) {
-            n--;
-            cur1 = cur1.next;
-        }
-        while (cur1 != cur2) {
-            cur1 = cur1.next;
-            cur2 = cur2.next;
-        }
-        return cur1;
-    }
-
-    /**
-     * 两个链表都包括环形
-     *
-     * @param head1 head1
-     * @param loop1 loop1
-     * @param head2 head2
-     * @param loop2 loop2
-     * @return {@link Node}
-     */
-    private static Node bothLoop(Node head1, Node loop1, Node head2, Node loop2) {
-        // 如果 loop1 == loop2 说明他们一定相交，并且相交点是 loop 或者之前的节点
-        if (loop1 == loop2) {
-            Node cur1 = head1;
-            Node cur2 = head2;
-            int n = 0;
-            while (cur1 != loop1) {
-                n++;
-                cur1 = cur1.next;
-            }
-            while (cur2 != loop2) {
-                n--;
-                cur2 = cur2.next;
-            }
-            // 根据两个链表到 loop 的长度来赋值，cur1 为长的链表，cur2 为短的链表
-            cur1 = n < 0 ? head2 : head1;
+        if (cur1 == cur2) {
+            cur1 = n > 0 ? head1 : head2;
             cur2 = cur1 == head1 ? head2 : head1;
             n = Math.abs(n);
-            // 长链表往下跳 n 个节点，和短链表的长度一致，然后一起往下跳，直到找到第一个相交点
-            while (n >= 0) {
-                n--;
+            while (n > 0) {
                 cur1 = cur1.next;
+                n--;
             }
             while (cur1 != cur2) {
                 cur1 = cur1.next;
@@ -108,32 +120,26 @@ public class Code01FindFirstIntersectNode {
             }
             return cur1;
         } else {
-            // 如果两个 loop 不相等，可能不相交，也可能相交，如果相交 loop1 和 loop2 是环上的两个点
-            Node cur = loop2.next;
-            while (cur != loop2) {
-                if (cur == loop1) {
-                    return cur;
-                }
-                cur = cur.next;
-            }
             return null;
         }
     }
 
-    private static Node getLoopFirstNode(Node head) {
-        if (head.next == null || head.next.next == null) {
+    private static Node getFirstLoopNode(Node head) {
+        if (head == null || head.next == null || head.next.next == null) {
             return null;
         }
-        Node slow = head.next;
-        Node fast = head.next.next;
-        while (slow != fast) {
-            if (fast.next == null || fast.next.next == null) {
-                return null;
-            }
+        Node slow = head;
+        Node fast = head;
+        while (fast.next != null && fast.next.next != null) {
             slow = slow.next;
             fast = fast.next.next;
+            if (slow == fast) {
+                break;
+            }
         }
-        // 走到这里说明一定有环，并且此时 slow == fast
+        if (fast.next == null || fast.next.next == null) {
+            return null;
+        }
         fast = head;
         while (slow != fast) {
             slow = slow.next;
