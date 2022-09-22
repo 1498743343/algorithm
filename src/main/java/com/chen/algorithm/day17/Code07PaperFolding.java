@@ -13,6 +13,31 @@ package com.chen.algorithm.day17;
  */
 public class Code07PaperFolding {
 
+    public static void main(String[] args) {
+        int n = 4;
+        printPaperFolds(n);
+        System.out.println();
+        printAllFolds(n);
+    }
+
+    /**
+     * 打印纸张折叠
+     *
+     * @param n n
+     */
+    private static void printPaperFolds(int n) {
+        process(n, true);
+    }
+
+    public static void process(int n, boolean down) {
+        if (n == 0) {
+            return;
+        }
+        process(n - 1, true);
+        System.out.print(down ? "凹 " : "凸 ");
+        process(n - 1, false);
+    }
+
     public static void printAllFolds(int n) {
         process(1, n, true);
     }
@@ -22,12 +47,7 @@ public class Code07PaperFolding {
             return;
         }
         process(i + 1, n, true);
-        System.out.println(down ? "凹" : "凸");
+        System.out.print(down ? "凹 " : "凸 ");
         process(i + 1, n, false);
-    }
-
-    public static void main(String[] args) {
-        int n = 4;
-        printAllFolds(n);
     }
 }
