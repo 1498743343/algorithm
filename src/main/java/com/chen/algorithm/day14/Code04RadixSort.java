@@ -41,6 +41,8 @@ public class Code04RadixSort {
                 count[j] = count[j - 1] + count[j];
             }
             // 按照当前值将 arr 中的元素取出，然后按照顺序放入 help 中
+            // 这里倒序遍历的原因是，前一次排序的结果已经记录到了 arr 中，如果正序遍历就可能出问题
+            // 例如，上次的排序结果是 33,34,如果我这次去排序 十位上的数，就会让 33 排在 34的后面
             for (int j = arr.length - 1; j >= 0; j--) {
                 int number = arr[j];
                 int digit = getDigit(number, i);
