@@ -12,25 +12,14 @@ import java.util.PriorityQueue;
  * @date 2022/09/23
  */
 public class Code407 {
-    public static void main(String[] args) {
-        // [[5,8,7,7],[5,2,1,5],[7,1,7,1],[8,9,6,9],[9,8,9,9]]
-        int[][] test = new int[5][4];
-        test[0] = new int[]{5, 8, 7, 7};
-        test[1] = new int[]{5, 2, 1, 5};
-        test[2] = new int[]{7, 1, 7, 1};
-        test[3] = new int[]{8, 9, 6, 9};
-        test[4] = new int[]{9, 8, 9, 9};
-        int ans = trapRainWater(test);
-        System.out.println(ans);
-    }
 
     /**
-     * 思路：先把四边都压栈，然后弹出栈顶元素，这样就找到了最小的边，然后去看他的四周，有没有没访问过的节点，找到以后计算他们的存水量
+     * 思路：先把四边都放入小根堆中，然后弹出堆顶元素，这样就找到了最小的边，然后去看他的四周，有没有没访问过的节点，找到以后计算他们的存水量
      *
      * @param heightMap 高度图
      * @return int
      */
-    public static int trapRainWater(int[][] heightMap) {
+    public int trapRainWater(int[][] heightMap) {
         if (heightMap.length <= 2 || heightMap[0].length <= 2) {
             return 0;
         }
