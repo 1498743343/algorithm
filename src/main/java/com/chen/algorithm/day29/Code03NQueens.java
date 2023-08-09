@@ -64,19 +64,19 @@ public class Code03NQueens {
         // 从右到左，每次取 pos 的最右侧位置去尝试，直到 pos 为 0
         while (pos != 0) {
             mostRightOne = pos & (-pos);
-            pos -= mostRightOne;
+            pos ^= mostRightOne;
             // colLimit | mostRightOne 是之前列的影响加上当前已选择列的影响，合并到一起传给下一层
             // (leftLimit | mostRightOne) << 1，当前行的左限制为 mostRightOne << 1，但是因为当前行被 leftLimit 限制了左边，而当前行的
             // leftLimit 传递到下一行还需要往左移一位，因为一条斜线上往左下拓展，往下走一步，同时需要往左走一步。所以合并起来就是 (leftLimit | mostRightOne) << 1
             // (rightLimit | mostRightOne) >>> 1，与左限制同理，但是右移是带符号的
             ans += process2(limit, colLimit | mostRightOne, (leftLimit | mostRightOne) << 1,
-                    (rightLimit | mostRightOne) >>> 1);
+                    (rightLimit | mostRightOne) >> 1);
         }
         return ans;
     }
 
     public static void main(String[] args) {
-        int n = 12;
+        int n = 10;
 
         long start = System.currentTimeMillis();
         System.out.println(num2(n));

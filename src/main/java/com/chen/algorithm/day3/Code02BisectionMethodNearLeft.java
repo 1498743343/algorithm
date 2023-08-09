@@ -10,6 +10,25 @@ import java.util.Arrays;
  * @date 2022/05/07
  */
 public class Code02BisectionMethodNearLeft {
+
+    public static int getAns(int[] arr, int num){
+        if (arr == null || arr.length == 0) {
+            return -1;
+        }
+        int left = 0;
+        int right = arr.length - 1;
+        int ans = 0;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] >= num) {
+                right = mid - 1;
+                ans = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
     /**
      * 得到随机数组
      * 长度：[0,maxLength]；值：[0,maxValue]

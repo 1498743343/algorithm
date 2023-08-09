@@ -74,7 +74,7 @@ public class Code03BestArrange {
 	public static int bestArrange2(Program[] programs) {
 		int ans = 0;
 		int end = 0;
-		Arrays.sort(programs, Comparator.comparingInt(program -> program.end));
+		Arrays.sort(programs, Comparator.comparingInt(p -> p.end));
 		for (Program p : programs) {
 			if (p.start >= end) {
 				end = p.end;

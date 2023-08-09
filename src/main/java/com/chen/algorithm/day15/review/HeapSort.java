@@ -39,29 +39,28 @@ public class HeapSort {
         if (array == null || array.length <= 1) {
             return;
         }
-        int length = array.length;
-        for (int i = length - 1; i >= 0; i--) {
-            heapify(array, i, length);
+        int n = array.length;
+        for (int i = n - 1; i >= 0; i--) {
+            heapify(array, i, n);
         }
-        while (length > 1) {
-            swap(array, 0, --length);
-            heapify(array, 0, length);
+        for (int i = 0; i < array.length; i++) {
+            swap(array, 0, --n);
+            heapify(array, 0, n);
         }
     }
 
     private static void heapify(int[] array, int index, int heapSize) {
-        int left = 2 * index + 1;
-        while (left < heapSize) {
-            int largest = left;
-            if (left + 1 < heapSize && array[left + 1] > array[left]) {
-                largest = left + 1;
+        int next = index * 2 + 1;
+        while (next < heapSize) {
+            if (next + 1 < heapSize && array[next + 1] > array[next]) {
+                next++;
             }
-            if (array[index] >= array[largest]) {
+            if (array[index] >= array[next]) {
                 return;
             }
-            swap(array, index, largest);
-            index = largest;
-            left = 2 * index + 1;
+            swap(array, index, next);
+            index = next;
+            next = index * 2 + 1;
         }
     }
 

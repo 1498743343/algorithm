@@ -9,47 +9,86 @@ package com.chen.algorithm.day4;
  * @date 2022/05/10
  */
 public class Test {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dumy = new ListNode();
+        dumy.next = head;
+        ListNode pre;
+        ListNode start = head;
+        ListNode end;
+        ListNode next;
+        while(true) {
+            end = countK(start, k);
+            if(end == null) {
+                return dumy.next;
+            }
+            next = end.next;
+            end.next = null;
+            reverse(start);
+            start.next = next;
+            pre = start;
+            start = next;
+            pre.next = end;
+        }
+    }
+
+    public void reverse(ListNode node) {
+        ListNode pre = null;
+        ListNode next;
+        while(node != null){
+            next = node.next;
+            node.next = pre;
+            pre = node;
+            node = next;
+        }
+    }
+
+    public ListNode countK(ListNode node, int k){
+        for(int i = 1; node != null && i < k; i++) {
+            node = node.next;
+        }
+        return node;
+    }
     public static class ListNode {
         public int val;
         public ListNode next;
     }
-
-    public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode dummy = new ListNode();
-        dummy.next = head;
-        ListNode pre = dummy;
-        ListNode end = dummy;
-        ListNode next;
-        ListNode start = head;
-        while (end.next != null) {
-            for (int i = 0; i < k && end != null; i++) {
-                end = end.next;
-            }
-            if (end == null) {
-                break;
-            }
-            next = end.next;
-            end.next = null;
-            pre.next = reverse(start);
-            start.next = next;
-            pre = start;
-            end = start;
-            start = next;
-        }
-        return dummy.next;
-
-    }
-
-    public static ListNode reverse(ListNode head) {
-        ListNode pre = null;
-        ListNode next;
-        while (head != null) {
-            next = head.next;
-            head.next = pre;
-            pre = head;
-            head = next;
-        }
-        return pre;
-    }
+//
+//    public ListNode reverseKGroup(ListNode head, int k) {
+//        ListNode dummy = new ListNode();
+//        dummy.next = head;
+//        ListNode pre = dummy;
+//        ListNode end = dummy;
+//        ListNode next;
+//        ListNode start = head;
+//        while (end.next != null) {
+//            for (int i = 0; i < k && end != null; i++) {
+//                end = end.next;
+//            }
+//            if (end == null) {
+//                break;
+//            }
+//            next = end.next;
+//            end.next = null;
+//            pre.next = reverse(start);
+//            start.next = next;
+//            pre = start;
+//            end = start;
+//            start = next;
+//        }
+//        return dummy.next;
+//
+//    }
+//
+//    public static ListNode reverse(ListNode head) {
+//        ListNode pre = null;
+//        ListNode next;
+//        while (head != null) {
+//            next = head.next;
+//            head.next = pre;
+//            pre = head;
+//            head = next;
+//        }
+//        return pre;
+//    }
 
 }

@@ -18,14 +18,17 @@ public class Code01PrintBinary {
         }
         System.out.println();
     }
+    public static void printByte(byte num) {
+        for (int i = 7; i >= 0; i--) {
+            System.out.print((num & (1 << i)) == 0 ? "0" : 1);
+        }
+        System.out.println();
+    }
     public static void main(String[] args) {
-        int a = 123;
-        System.out.println(a);
-        print(a);
-        System.out.println(-a);
-        print(-a);
-        System.out.println(~a +1 );
-        print(~a + 1);
-        print(Integer.MIN_VALUE);
+        byte a = (byte) -112;
+        printByte(a);
+        print(0xff);
+        printByte((byte) (a & 0xff));
+
     }
 }
