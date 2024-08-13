@@ -27,7 +27,7 @@ public class Code01MergeKSortedLists {
         }
     }
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists == null) {
+        if (lists == null || lists.length == 0) {
             return null;
         }
         return merge(lists, 0, lists.length - 1);
@@ -36,9 +36,6 @@ public class Code01MergeKSortedLists {
     public static ListNode merge(ListNode[] lists, int left, int right) {
         if (left == right) {
             return lists[right];
-        }
-        if (left > right) {
-            return null;
         }
         int mid = (left + right) / 2;
         return mergeTwoLists(merge(lists, left, mid), merge(lists, mid + 1, right));
