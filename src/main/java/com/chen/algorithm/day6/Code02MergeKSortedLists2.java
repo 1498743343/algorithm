@@ -10,7 +10,6 @@ import java.util.PriorityQueue;
  * 测试链接：https://leetcode.cn/problems/merge-k-sorted-lists/
  *
  * @author chenzihan
- * @date 2022/05/16
  */
 public class Code02MergeKSortedLists2 {
     public static class ListNode {
@@ -33,7 +32,6 @@ public class Code02MergeKSortedLists2 {
         if (lists == null) {
             return null;
         }
-        int length = lists.length;
         PriorityQueue<ListNode> queue = new PriorityQueue<>(Comparator.comparingInt(o -> o.val));
         for (ListNode list : lists) {
             // 必须保证每个 list 都不是 null 才可以添加到队列中
@@ -44,11 +42,8 @@ public class Code02MergeKSortedLists2 {
         if (queue.isEmpty()) {
             return null;
         }
-        ListNode head = queue.poll();
-        ListNode currentNode = head;
-        if (head.next != null) {
-            queue.add(head.next);
-        }
+        ListNode dummy = new ListNode();
+        ListNode currentNode = dummy;
         while (!queue.isEmpty()) {
             ListNode poll = queue.poll();
             currentNode.next = poll;
@@ -57,6 +52,6 @@ public class Code02MergeKSortedLists2 {
             }
             currentNode = currentNode.next;
         }
-        return head;
+        return dummy.next;
     }
 }
